@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BITE — прототип приложения</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--g:#7A8B6A;--gd:#3F4F37;--cr:#F7F3EC;--cd:#FFFCF8;--t:#E8EDE0;--ink:#2B2F26;--mu:#8A8F82;--ac:#C0583A;--y:#FFD84D}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}body{background:radial-gradient(circle at 30% 20%,#cfd8c2,#8fa07e);font-family:Montserrat,system-ui,sans-serif;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.ph{position:relative;width:min(390px,100vw);height:min(820px,100dvh);background:var(--cr);overflow:hidden;border-radius:34px;box-shadow:0 0 0 9px #1f251c,0 24px 60px #0007}
+@media(max-width:430px){.ph{border-radius:0;box-shadow:none}}
+.s{position:absolute;inset:0;padding:22px 18px 96px;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .4s;background:var(--cr);overflow-y:auto;scrollbar-width:none}
+.s.on{transform:none}.s.off{transform:translateX(-25%);opacity:0;pointer-events:none}
+button{font:inherit;border:0;cursor:pointer;transition:transform .12s,background .2s,box-shadow .2s}button:active{transform:scale(.95)}
+.b{width:100%;height:52px;border-radius:17px;background:var(--g);color:#fff;font-weight:700;font-size:15px;box-shadow:0 7px 16px #7a8b6a66}.b:hover{background:#6c7d5c}
+.b.o{background:#fff;color:var(--gd);border:1.5px solid var(--g);box-shadow:none}
+.i{width:42px;height:42px;border-radius:13px;background:var(--cd);box-shadow:0 2px 9px #0002;font-size:18px;color:var(--gd);flex:none}
+.r{display:flex;align-items:center;justify-content:space-between;gap:8px}
+h1{font-size:27px;font-weight:800;letter-spacing:2px;color:var(--gd)}h1 i{color:var(--ac);font-style:normal}
+h2{font-size:17px;font-weight:700;color:var(--gd)}.m{color:var(--mu);font-size:12px}
+.ch{padding:0 14px;height:42px;border-radius:14px;background:var(--cd);border:1px solid #0001;font-size:12px;font-weight:600;color:var(--ink);white-space:nowrap}.ch.a{background:var(--g);color:#fff;box-shadow:0 5px 12px #7a8b6a66}
+.cs{display:flex;gap:8px;overflow-x:auto;padding:6px 18px 8px;margin:10px -18px 0;scrollbar-width:none}
+.bx{background:var(--t);border-radius:16px;padding:12px 14px}
+input[type=text]{width:100%;height:50px;border-radius:16px;border:1.5px solid #0001;background:var(--cd);padding:0 16px;font:inherit;font-size:14px;margin-top:12px;outline:0;transition:border .2s}input[type=text]:focus{border-color:var(--g)}
+input[type=range]{width:100%;accent-color:var(--gd)}
+.tg{width:46px;height:26px;border-radius:13px;background:#c9ccc2;position:relative;transition:background .2s;flex:none}.tg:after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px #0003}.tg.a{background:var(--g)}.tg.a:after{left:23px}
+.pc{background:var(--cd);border-radius:20px;overflow:hidden;box-shadow:0 4px 14px #0001;margin-top:12px;cursor:pointer;position:relative;transition:transform .15s}.pc:active{transform:scale(.98)}
+.pi{height:92px;display:flex;align-items:center;justify-content:center;font-size:44px;position:relative}
+.pc .n{padding:10px 14px 12px}.pc b{font-size:14px}
+.hb{position:absolute;right:8px;bottom:8px;background:none;font-size:22px;color:var(--mu)}.hb.a{color:var(--ac);animation:pp .35s}
+.bd{position:absolute;left:10px;top:10px;background:#fffd;border-radius:10px;padding:3px 9px;font-size:10px;font-weight:700}
+.sg{display:flex;background:var(--t);border-radius:15px;padding:3px;margin:14px 0 4px}.sg button{flex:1;height:38px;border-radius:12px;background:none;font-size:13px;font-weight:600;color:var(--gd)}.sg .a{background:var(--g);color:#fff}
+#map{height:420px;border-radius:20px;background:#dfe6d3;position:relative;overflow:hidden;margin-top:12px;background-image:linear-gradient(#fff9 8px,#0000 8px),linear-gradient(90deg,#fff9 8px,#0000 8px);background-size:100% 110px,110px 100%}
+.pn{position:absolute;font-size:32px;background:none;transform:translate(-50%,-100%);animation:dp .5s backwards}
+.f{animation:fd .4s backwards}@keyframes fd{from{opacity:0;transform:translateY(12px)}}@keyframes pp{from{transform:scale(.3)}60%{transform:scale(1.4)}}@keyframes dp{from{transform:translate(-50%,-300%);opacity:0}}
+#sp{background:linear-gradient(160deg,#8a9b79,#3F4F37);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:0}
+#sp .lg{width:84px;height:84px;border-radius:50%;border:4px solid #fff;display:flex;align-items:center;justify-content:center;font-size:36px}#sp.on .lg{animation:pp .8s}
+#sp b{font-size:60px;font-weight:800;letter-spacing:5px}#sp.on b{animation:fd .9s .2s backwards}
+.bar{width:160px;height:6px;border-radius:3px;background:#fff4;overflow:hidden;margin-top:60px}.bar i{display:block;height:100%;width:0;background:#fff}#sp.on .bar i{animation:ld 2.4s linear forwards}@keyframes ld{to{width:100%}}
+.lf{position:absolute;font-size:60px;opacity:.15}
+nav{position:absolute;left:12px;right:12px;bottom:14px;height:66px;background:var(--cd);border-radius:22px;box-shadow:0 6px 24px #0003;display:flex;padding:6px;transition:transform .35s;z-index:5}nav.h{transform:translateY(120px)}
+nav button{flex:1;background:none;border-radius:16px;font-size:10px;font-weight:600;color:var(--mu);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}nav button span{font-size:19px}nav .a{background:var(--t);color:var(--gd)}
+#pim{height:250px;margin:-22px -18px 0;border-radius:0 0 30px 30px;font-size:100px;position:relative;display:flex;align-items:center;justify-content:center}
+#pim .i{position:absolute;top:22px}
+.tag{position:absolute;right:14px;bottom:14px;background:#fff;border-radius:14px;padding:6px 12px;font-size:11px;font-weight:700}
+.mi{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed #0002;font-size:13px}
+.pl{background:var(--cd);border-radius:24px;padding:16px;box-shadow:0 -4px 24px #0003;position:absolute;left:12px;right:12px;bottom:16px}
+.sw{stroke-dasharray:900;stroke-dashoffset:900}.on .sw{animation:dr 1.8s .4s ease forwards}@keyframes dr{to{stroke-dashoffset:0}}
+#sh{position:absolute;inset:0;background:#0006;z-index:9;opacity:0;pointer-events:none;transition:opacity .3s}#sh.a{opacity:1;pointer-events:auto}
+#sh>div{position:absolute;left:0;right:0;bottom:0;background:var(--cr);border-radius:28px 28px 0 0;padding:20px 18px 26px;transform:translateY(100%);transition:transform .35s}#sh.a>div{transform:none}
+.lo{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:var(--cd);margin-top:8px;font-size:14px;font-weight:600;width:100%;text-align:left}.lo.a{outline:2px solid var(--g)}
+#ld{position:absolute;inset:0;background:#f7f3ecee;z-index:8;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-weight:600;color:var(--gd)}#ld.a{display:flex}
+.sp{width:46px;height:46px;border:5px solid var(--t);border-top-color:var(--g);border-radius:50%;animation:rt .8s linear infinite}@keyframes rt{to{transform:rotate(360deg)}}
+#ts{position:absolute;left:50%;top:18px;transform:translate(-50%,-90px);background:var(--gd);color:#fff;padding:11px 18px;border-radius:14px;font-size:12px;font-weight:600;z-index:10;transition:transform .35s;white-space:nowrap;box-shadow:0 6px 18px #0004}#ts.a{transform:translate(-50%,0)}
+.st{font-size:34px;background:none;color:#cfd2c8;transition:transform .15s,color .15s}.st.a{color:var(--y);transform:scale(1.15)}
+.av{width:70px;height:70px;border-radius:50%;background:var(--g);color:#fff;font-size:30px;font-weight:800;display:flex;align-items:center;justify-content:center}
+</style></head><body>
+<div class="ph">
+<div id="ts"></div>
+<div id="ld"><div class="sp"></div>Ищем заведения рядом…</div>
+<div id="sh" onclick="sheet(0)"><div onclick="event.stopPropagation()"><h2>Где вы находитесь?</h2><div id="lc"></div></div></div>
+
+<div class="s on" id="sp" onclick="go('home')"><span class="lf" style="left:14px;top:30px">🌿</span><span class="lf" style="right:10px;bottom:90px;transform:scaleX(-1)">🌿</span>
+<div class="lg">📍</div><b>BITE</b><div style="font-size:15px;font-weight:600">Поесть рядом. Без лишнего.</div><div class="bar"><i></i></div><div style="font-size:12px;opacity:.8">Загрузка…</div></div>
+
+<div class="s" id="home">
+<div class="r"><h1>BITE<i>.</i></h1><button class="ch" id="cy" onclick="sheet(1)">📍 Токмок ▾</button></div>
+<div class="m" style="margin-top:2px;font-size:13px" id="gr">Что будем есть?</div>
+<input type="text" id="q" placeholder="🔍  Что ищем?" list="sg">
+<div class="cs" id="cats"></div>
+<div class="r" style="align-items:stretch"><div class="bx" style="flex:1.2"><div class="r m"><span>Радиус поиска</span><b id="rv" style="color:var(--ink)">2 км</b></div><input type="range" id="rad" min="1" max="3" step="0.5" value="2"></div>
+<div class="bx r" style="flex:1;cursor:pointer" onclick="tgl()"><span style="font-size:12px;font-weight:600">Только открытые</span><span class="tg a" id="tg"></span></div></div>
+<button class="b" style="margin-top:14px" onclick="search()">📍 Найти рядом</button>
+<div class="bx" style="margin-top:14px;background:linear-gradient(120deg,#FFE9A8,#FFD84D);display:flex;gap:12px;align-items:center"><span style="font-size:30px">🎓</span><div><b style="font-size:13px">Студенческая скидка −10%</b><div style="font-size:11px">в Bun &amp; Coffee по студенческому</div></div></div>
+<div class="r" style="margin-top:18px"><h2>Популярное рядом</h2><span class="m" style="color:var(--ac);cursor:pointer" onclick="search()">Все места</span></div><div id="pop"></div></div>
+
+<div class="s" id="res">
+<div class="r"><button class="i" onclick="go('home',1)">‹</button><h2 id="rt">Рядом</h2><button class="i" onclick="sheet(1)">📍</button></div>
+<div class="sg"><button class="a" id="bl" onclick="view('l')">Список</button><button id="bm" onclick="view('m')">Карта</button></div>
+<div class="cs" style="margin-top:4px"><button class="ch a" id="s1" onclick="srt('d')">По расстоянию</button><button class="ch" id="s2" onclick="srt('r')">По рейтингу</button><button class="ch" id="s3" onclick="tgl()">Только открытые</button></div>
+<div class="m" id="cnt" style="margin-top:6px"></div><div id="list"></div><div id="map" hidden></div><div id="mini"></div></div>
+
+<div class="s" id="pl">
+<div id="pim"><button class="i" style="left:18px" onclick="go(fr,1)">‹</button><button class="i" style="right:18px" id="pf" onclick="fav(cu)">♡</button><span id="pe"></span><span class="tag" id="pt"></span></div>
+<div class="r" style="margin-top:16px"><h2 id="pn" style="font-size:23px"></h2><b id="pr" style="background:#f1e1d9;color:var(--ac);padding:6px 12px;border-radius:12px;font-size:13px"></b></div>
+<div class="m" id="pk" style="margin-top:4px"></div>
+<div class="bx r" style="margin-top:14px;background:var(--cd);border:1px solid #0001"><div><b id="pd" style="font-size:13px"></b><div class="m" id="pa"></div></div><div style="width:64px;height:46px;border-radius:10px;background:#dfe6d3;display:flex;align-items:center;justify-content:center">🗺</div></div>
+<h2 style="margin-top:18px;font-size:14px">О заведении</h2><div class="m" id="po" style="margin-top:6px;line-height:1.5;font-size:12.5px"></div>
+<div class="r" style="justify-content:flex-start;margin-top:10px"><span class="ch" style="height:32px;line-height:32px">🍽 Еда на месте</span><span class="ch" style="height:32px;line-height:32px">🥡 С собой</span><span class="ch" style="height:32px;line-height:32px">⚡ Быстро</span></div>
+<h2 style="margin-top:18px;font-size:14px">Популярные блюда</h2><div id="mn"></div>
+<button class="b" style="margin-top:20px" onclick="go('rs')">🗺 Построить маршрут</button></div>
+
+<div class="s" id="rs">
+<div class="r"><button class="i" onclick="go('pl',1)">‹</button><h2>Маршрут</h2><span style="width:42px"></span></div>
+<div class="bx" style="margin-top:18px;background:var(--cd)"><div class="m">Откуда</div><b style="font-size:14px" id="rf">🟢 Моё местоположение</b></div>
+<div class="bx" style="margin-top:8px;background:var(--cd)"><div class="m">Куда</div><b style="font-size:14px" id="rto"></b></div>
+<div class="sg"><button class="a" id="mw" onclick="mode('w')">🚶 Пешком</button><button id="mt" onclick="mode('t')">🚌 Транспорт</button><button id="mc" onclick="mode('c')">🚕 Такси</button></div>
+<div class="bx" style="text-align:center;margin-top:12px;padding:22px"><div style="font-size:38px;font-weight:800;color:var(--gd)" id="rtm"></div><div class="m" id="rds"></div></div>
+<div style="height:110px;margin-top:12px;border-radius:18px;background:#dfe6d3;display:flex;align-items:center;justify-content:center;color:var(--mu);font-size:12px">🗺 предпросмотр маршрута</div>
+<button class="b" style="margin-top:18px" onclick="go('rt2')">Начать</button></div>
+
+<div class="s" id="rt2" style="padding:0">
+<svg viewBox="0 0 390 820" style="position:absolute;inset:0;width:100%;height:100%"><rect width="390" height="820" fill="#dfe6d3"/><g stroke="#fff" stroke-width="14" fill="none"><path d="M0 250H390M0 480H390M0 690H390M110 0V820M280 0V820"/></g><g fill="#c9d6bb"><rect x="130" y="270" width="130" height="190" rx="14"/><rect x="300" y="500" width="70" height="170" rx="14"/></g>
+<path class="sw" d="M110 600V480H280V250" fill="none" stroke="#5E6F4F" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" pathLength="900"/><g id="rg"></g>
+<circle cx="110" cy="600" r="10" fill="#5E6F4F" stroke="#fff" stroke-width="3"/><text x="124" y="606" font-size="12" font-weight="700" fill="#2B2F26">Старт</text><text x="280" y="226" text-anchor="middle" font-size="32">📍</text><text x="296" y="262" font-size="12" font-weight="700" fill="#2B2F26">Финиш</text></svg>
+<button class="i" style="position:absolute;top:22px;left:18px" onclick="go('rs',1)">‹</button>
+<div class="pl"><div class="r"><b style="font-size:17px" id="rp"></b><span class="ch" style="height:30px;line-height:30px;background:var(--t)" id="rl">осталось</span></div><div class="m" id="rq" style="margin:4px 0 14px"></div>
+<div class="r"><button class="b" style="flex:1.2" onclick="go('ar')">Завершить</button><button class="b o" style="flex:1" onclick="go('pl',1)">Отмена</button></div></div></div>
+
+<div class="s" id="ar" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;padding-bottom:30px">
+<div style="width:96px;height:96px;border-radius:50%;background:var(--g);color:#fff;font-size:48px;display:flex;align-items:center;justify-content:center" id="ok">✓</div>
+<h2 style="font-size:25px;margin-top:10px">Вы пришли!</h2><div class="m" id="an" style="font-size:14px"></div>
+<div class="m" style="margin-top:14px">Оцените заведение</div><div id="stars"></div>
+<button class="b" style="margin-top:18px" onclick="fav(cu,1)" id="af">♥ В избранное</button><button class="b o" onclick="go('home',1)">Закрыть</button></div>
+
+<div class="s" id="fv"><div class="r"><h2 style="font-size:22px">Избранное</h2><span class="ch" id="fc" style="height:32px;line-height:32px"></span></div><div id="fl"></div></div>
+
+<div class="s" id="pr2"><h2 style="font-size:22px">Профиль</h2>
+<div class="r" style="justify-content:flex-start;gap:14px;margin-top:16px"><div class="av">А</div><div><b style="font-size:17px">Айбек</b><div class="m">Студент · Токмок</div></div></div>
+<h2 style="font-size:14px;margin-top:22px">Любимые категории</h2><div class="r" style="flex-wrap:wrap;justify-content:flex-start;margin-top:10px" id="pc"></div>
+<div class="bx r" style="margin-top:18px;cursor:pointer" onclick="this.querySelector('.tg').classList.toggle('a')"><span style="font-size:13px;font-weight:600">🔔 Скидки рядом</span><span class="tg a"></span></div>
+<div class="bx r" style="margin-top:8px;cursor:pointer" onclick="this.querySelector('.tg').classList.toggle('a')"><span style="font-size:13px;font-weight:600">🟢 «Перерыв между парами»</span><span class="tg"></span></div>
+<div class="bx" style="margin-top:8px"><div class="r m"><span>Радиус по умолчанию</span><b id="pv" style="color:var(--ink)">2 км</b></div><input type="range" min="1" max="3" step="0.5" value="2" oninput="pv.textContent=km(this.value)+' км'"></div>
+<button class="b" style="margin-top:18px" onclick="toast('✅ Предпочтения сохранены')">Сохранить</button></div>
+
+<nav class="h" id="nv"><button data-t="home" onclick="go('home')"><span>🏠</span>Главная</button><button data-t="res" onclick="search()"><span>📍</span>Рядом</button><button data-t="fv" onclick="go('fv')"><span>♥</span>Избранное</button><button data-t="pr2" onclick="go('pr2')"><span>👤</span>Профиль</button></nav>
+</div>
+<script>
+const P=[{n:'Burger Point',c:['Бургеры'],t:'Бургеры · Фастфуд',d:.8,r:4.7,e:'🍔',o:1,u:'22:00',a:'проспект Манаса, 54',g:['#c98a4b','#6b3f1d'],x:'Бургеры, картофель и напитки. Удобное место для быстрого перекуса после учёбы.',m:[['Чизбургер',280],['Картофель фри',120],['Лимонад',90]]},
+{n:'Bun & Coffee',c:['Кофе','Выпечка'],t:'Кофе · Выпечка',d:1.2,r:4.5,e:'☕',o:1,u:'20:00',a:'улица Ленина, 12',g:['#a67c52','#4b3322'],x:'Свежая выпечка и кофе навынос рядом с университетом. Для студентов скидка 10%.',m:[['Капучино',150],['Круассан',110],['Чизкейк',190]]},
+{n:'Pizza Town',c:['Пицца'],t:'Пицца',d:1.6,r:4.3,e:'🍕',o:0,u:'закрыто',a:'улица Фрунзе, 31',g:['#d1604a','#7a2c1d'],x:'Пицца на тонком тесте, подходит для компании друзей.',m:[['Маргарита',380],['Пепперони',450],['Кола',80]]},
+{n:'Coffee Lab',c:['Кофе','Выпечка'],t:'Кофе · Десерты',d:2.4,r:4.6,e:'🥐',o:1,u:'21:00',a:'улица Токтогула, 7',g:['#8aa07a','#3F4F37'],x:'Спокойное место с кофе и десертами, чтобы посидеть между парами.',m:[['Латте',170],['Эклер',120],['Раф',190]]}];
+const $=i=>document.getElementById(i),km=v=>String(v).replace('.',','),C=['Рядом','Бургеры','Пицца','Кофе','Выпечка'],E=['📍','🍔','🍕','☕','🥐'];
+let cat='Рядом',oo=true,fa=new Set(),cu=0,fr='home',md='w',sc=$('sp'),so='d',tm,city='Токмок',rate=0;
+const T={home:1,res:1,fv:1,pr2:1};
+function go(id,b){const n=$(id),o=sc;if(n===o)return;if(id==='pl'&&['home','res','fv'].includes(o.id))fr=o.id;
+n.style.transition='none';n.className='s'+(b?' off':'');n.offsetWidth;n.style.transition='';n.className='s on';o.className='s'+(b?'':' off');sc=n;
+$('nv').className=T[id]?'':'h';document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('a',x.dataset.t===id));hook(id)}
+function hook(id){clearInterval(tm);
+if(id==='res'){$('rt').textContent='Рядом · '+km($('rad').value)+' км';rend()}
+if(id==='pl'){const p=P[cu];$('pim').style.background=`linear-gradient(140deg,${p.g[0]},${p.g[1]})`;$('pe').textContent=p.e;$('pt').textContent=p.o?'🕘 Открыто до '+p.u:'Сейчас закрыто';$('pn').textContent=p.n;$('pr').textContent='★ '+p.r;$('pk').textContent=p.t;$('pd').textContent='📍 '+km(p.d)+' км от вас';$('pa').textContent=p.a;$('po').textContent=p.x;$('mn').innerHTML=p.m.map(m=>`<div class="mi"><span>${m[0]}</span><b>${m[1]} сом</b></div>`).join('');fh();$('pl').scrollTop=0}
+if(id==='rs'){$('rto').textContent='📍 '+P[cu].n;$('rf').textContent='🟢 '+(city==='Токмок'?'Моё местоположение':city);mode(md)}
+if(id==='rt2'){const t=tmv();let l=t;$('rg').innerHTML='<circle r="11" fill="#C0583A" stroke="#fff" stroke-width="3"><animateMotion dur="'+(t*1.2)+'s" begin="0.6s" fill="freeze" path="M110 600V480H280V250"/></circle>';
+$('rl').textContent='осталось '+l+' мин';tm=setInterval(()=>{l=Math.max(0,l-1);$('rl').textContent=l?'осталось '+l+' мин':'вы на месте 🎉';if(!l)clearInterval(tm)},1200)}
+if(id==='ar'){$('an').textContent=P[cu].n;fh();rate=0;stars();$('ok').style.animation='none';$('ok').offsetWidth;$('ok').style.animation='pp .6s'}
+if(id==='fv')fl();if(id==='home'){pop();gr()}if(id==='pr2')pc()}
+function gr(){const h=new Date().getHours();$('gr').textContent=(h<11?'Доброе утро, Айбек! ':h<17?'Добрый день, Айбек! ':'Добрый вечер, Айбек! ')+'Что будем есть?'}
+function card(i,d){const p=P[i],f=fa.has(i);return `<div class="pc f" style="animation-delay:${d||0}s" onclick="cu=${i};go('pl')"><div class="pi" style="background:linear-gradient(140deg,${p.g[0]},${p.g[1]})">${p.e}<span class="bd">${p.o?'● Открыто':'Закрыто'}</span></div><div class="n"><div class="r"><b>${p.n}</b><b style="color:var(--ac);font-size:12px">★ ${p.r}</b></div><div class="m">${p.t}</div><div class="r m" style="margin-top:6px"><span>📍 ${km(p.d)} км</span><span style="margin-right:34px">≈ ${Math.round(p.d*12.5)} мин пешком</span></div></div><button class="hb ${f?'a':''}" onclick="event.stopPropagation();fav(${i});this.classList.toggle('a',fa.has(${i}));this.textContent=fa.has(${i})?'♥':'♡'">${f?'♥':'♡'}</button></div>`}
+function match(){const q=$('q').value.trim().toLowerCase(),r=+$('rad').value;return P.map((p,i)=>i).filter(i=>{const p=P[i];return p.d<=r&&(!oo||p.o)&&(cat==='Рядом'||p.c.includes(cat))&&(!q||(p.n+p.t).toLowerCase().includes(q))}).sort((a,b)=>so==='d'?P[a].d-P[b].d:P[b].r-P[a].r)}
+function rend(){const m=match();$('cnt').textContent=m.length?'Найдено мест: '+m.length:'';$('list').innerHTML=m.length?m.map((i,k)=>card(i,k*.07)).join(''):'<div class="bx" style="margin-top:24px;text-align:center;line-height:1.7;padding:26px"><div style="font-size:40px">🤷</div>Рядом ничего не найдено.<br>Увеличьте радиус или выключите «Только открытые».</div>';
+$('map').innerHTML='<div style="position:absolute;left:48%;top:55%;font-size:20px">🔵</div>'+m.map((i,k)=>`<button class="pn" style="left:${[28,72,66,30][i]}%;top:${[30,34,74,82][i]}%;animation-delay:${k*.12}s" onclick="mini(${i})">${P[i].e}</button>`).join('');$('mini').innerHTML='';$('s1').classList.toggle('a',so==='d');$('s2').classList.toggle('a',so==='r');$('s3').classList.toggle('a',oo)}
+function mini(i){$('mini').innerHTML=card(i)}
+function view(v){$('bl').className=v==='l'?'a':'';$('bm').className=v==='m'?'a':'';$('list').hidden=v!=='l';$('map').hidden=v!=='m';$('mini').innerHTML=''}
+function srt(s){so=s;rend()}
+function pop(){$('pop').innerHTML=card(0)+card(1,.1)}
+function fl(){$('fc').textContent=fa.size+' мест';$('fl').innerHTML=fa.size?[...fa].map((i,k)=>card(i,k*.07)).join(''):'<div class="bx" style="margin-top:30px;text-align:center;line-height:1.7;padding:30px"><div style="font-size:42px">💚</div>Пока пусто.<br>Добавляйте места значком ♥</div>'}
+function fav(i,k){const h=fa.has(i);k?fa.add(i):(h?fa.delete(i):fa.add(i));fh();toast(fa.has(i)?'♥ Добавлено в избранное':'Удалено из избранного')}
+function fh(){const s=fa.has(cu);$('pf').style.color=s?'var(--ac)':'var(--gd)';$('pf').textContent=s?'♥':'♡';$('af').textContent=s?'♥ В избранном':'♥ В избранное'}
+function tmv(){const d=P[cu].d;return md==='w'?Math.round(d*12.5):md==='t'?Math.max(3,Math.round(d*5)):Math.max(2,Math.round(d*2.5))}
+function mode(m){md=m;['w','t','c'].forEach(k=>$('m'+k).className=k===m?'a':'');const p=P[cu],t=tmv(),w={w:'пешком',t:'транспортом',c:'на такси'}[m];$('rtm').textContent=t+' мин';$('rds').textContent=km(p.d)+' км · '+w+(m==='c'?' · ≈ '+Math.round(80+p.d*35)+' сом':'');$('rp').textContent='Маршрут готов · '+t+' мин';$('rq').textContent={w:'Пешком',t:'Транспорт',c:'Такси'}[m]+' · '+km(p.d)+' км · '+p.n}
+function tgl(){oo=!oo;$('tg').classList.toggle('a',oo);if(sc.id==='res')rend()}
+function search(){$('ld').classList.add('a');setTimeout(()=>{$('ld').classList.remove('a');go('res')},800)}
+function sheet(o){$('sh').classList.toggle('a',o);if(o)$('lc').innerHTML=[['🎓','Университет'],['🏠','Общежитие'],['📍','Токмок'],['🛰','Определить автоматически']].map(l=>`<button class="lo ${l[1]===city?'a':''}" onclick="loc('${l[1]}')"><span style="font-size:20px">${l[0]}</span>${l[1]}</button>`).join('')}
+function loc(c){sheet(0);if(c[0]==='О'){toast('🛰 Определяем местоположение…');setTimeout(()=>{city='Токмок';$('cy').textContent='📍 Токмок ▾';toast('📍 Вы в Токмоке')},1100);return}city=c;$('cy').textContent='📍 '+c+' ▾';toast('📍 Ищем рядом: '+c)}
+function toast(t){const e=$('ts');e.textContent=t;e.classList.add('a');clearTimeout(e.t);e.t=setTimeout(()=>e.classList.remove('a'),1700)}
+function stars(){$('stars').innerHTML=[1,2,3,4,5].map(n=>`<button class="st ${n<=rate?'a':''}" onclick="rate=${n};stars();toast('Спасибо за оценку ${n}★')">★</button>`).join('')}
+const pf=new Set(['Бургеры','Кофе']);function pc(){$('pc').innerHTML=C.slice(1).map(c=>`<button class="ch ${pf.has(c)?'a':''}" style="margin:0 8px 8px 0" onclick="pf.has('${c}')?pf.delete('${c}'):pf.add('${c}');pc()">${E[C.indexOf(c)]} ${c}</button>`).join('')}
+$('cats').innerHTML=C.map((c,i)=>`<button class="ch ${i?'':'a'}" onclick="cat='${c}';[...$('cats').children].forEach(x=>x.classList.toggle('a',x===this))">${E[i]} ${c}</button>`).join('');
+$('rad').oninput=e=>$('rv').textContent=km(e.target.value)+' км';$('q').onkeydown=e=>{if(e.key==='Enter')search()};
+setTimeout(()=>{if(sc.id==='sp')go('home')},2600);
+</script></body></html>
